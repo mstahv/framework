@@ -15,10 +15,14 @@
  */
 package com.vaadin.tests.urifragments;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
+import com.vaadin.tests.navigator.NavigatorViewBlocksBackButtonActionTest;
 import com.vaadin.tests.tb3.MultiBrowserTest;
 
 /**
@@ -28,6 +32,11 @@ import com.vaadin.tests.tb3.MultiBrowserTest;
  * @author Vaadin Ltd
  */
 public class SettingNullFragmentTest extends MultiBrowserTest {
+
+    @Override
+    public List<DesiredCapabilities> getBrowsersToTest() {
+        return getIEBrowsersOnly();
+    }
 
     @Test
     public void testSettingNullURIFragment() throws Exception {
@@ -47,7 +56,8 @@ public class SettingNullFragmentTest extends MultiBrowserTest {
 
             @Override
             public Boolean apply(WebDriver input) {
-                String currentURL = getDriver().getCurrentUrl();
+                String currentURL = NavigatorViewBlocksBackButtonActionTest
+                        .getUrlForReal(getDriver());
                 String currentURIFragment = "";
                 if (currentURL.contains("#") && !currentURL.endsWith("#")) {
                     currentURIFragment = currentURL.split("#")[1];

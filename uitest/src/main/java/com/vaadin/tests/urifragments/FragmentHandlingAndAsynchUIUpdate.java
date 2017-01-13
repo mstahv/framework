@@ -2,7 +2,6 @@ package com.vaadin.tests.urifragments;
 
 import java.util.Iterator;
 
-import com.vaadin.server.Page;
 import com.vaadin.server.Page.UriFragmentChangedEvent;
 import com.vaadin.server.Page.UriFragmentChangedListener;
 import com.vaadin.server.VaadinRequest;
@@ -37,14 +36,14 @@ public class FragmentHandlingAndAsynchUIUpdate extends AbstractTestUIWithLog {
 
                 log(String.format("Button was clicked for fragmentId %s",
                         fragmentId));
-                Page.getCurrent().setUriFragment(
+                getPage().setUriFragment(
                         String.format(FRAG_NAME_TPL, fragmentId++));
             }
         });
 
         getLayout().addComponent(button);
 
-        Page.getCurrent().addUriFragmentChangedListener(
+        getPage().addUriFragmentChangedListener(
                 createUriFragmentChangedListener());
     }
 
@@ -100,7 +99,7 @@ public class FragmentHandlingAndAsynchUIUpdate extends AbstractTestUIWithLog {
                     e.printStackTrace();
                 }
 
-                UI.getCurrent().access(new Runnable() {
+                access(new Runnable() {
 
                     @Override
                     public void run() {

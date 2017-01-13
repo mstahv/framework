@@ -18,12 +18,16 @@ package com.vaadin.tests.urifragments;
 import static com.vaadin.tests.urifragments.FragmentHandlingAndAsynchUIUpdate.FRAG_NAME_TPL;
 import static com.vaadin.tests.urifragments.FragmentHandlingAndAsynchUIUpdate.START_FRAG_ID;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedCondition;
 
 import com.vaadin.testbench.By;
+import com.vaadin.tests.navigator.NavigatorViewBlocksBackButtonActionTest;
 import com.vaadin.tests.tb3.MultiBrowserTest;
 
 /**
@@ -31,7 +35,13 @@ import com.vaadin.tests.tb3.MultiBrowserTest;
  *
  * @author Vaadin Ltd
  */
+
 public class FragmentHandlingAndAsynchUIUpdateTest extends MultiBrowserTest {
+
+    @Override
+    public List<DesiredCapabilities> getBrowsersToTest() {
+        return getIEBrowsersOnly();
+    }
 
     /**
      * The case when we successively set 10 fragments, go back 9 times and then
@@ -118,9 +128,11 @@ public class FragmentHandlingAndAsynchUIUpdateTest extends MultiBrowserTest {
 
             @Override
             public Boolean apply(WebDriver input) {
-                String currentURL = getDriver().getCurrentUrl();
+                String currentURL = NavigatorViewBlocksBackButtonActionTest
+                        .getUrlForReal(getDriver());
                 String currentURIFragment = "";
-                if (currentURL.contains("#") && !currentURL.endsWith("#")) {
+                if (currentURL != null && currentURL.contains("#")
+                        && !currentURL.endsWith("#")) {
                     currentURIFragment = currentURL.split("#")[1];
                 }
                 return expectedText.equals(currentURIFragment);
